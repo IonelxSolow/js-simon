@@ -35,6 +35,16 @@ function displayNumbers(numbers){
     }
 }
 
+// avvia countdown
+let countDown = 30;
+const countDownInterval = setInterval(() => {
+    countDown--;
+    countDownEl.textContent = countDown;
+    if (countDown === 0) {
+        clearInterval(countDownInterval);
+    }
+}, 100);
+
 
 
 
