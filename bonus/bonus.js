@@ -55,24 +55,40 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // funzione per verificare le risposte 
+    // funzione per verificare le risposte
     function checkAnswers(correctNumbers) {
         const userAnswers = [];
         const inputs = inputGroupEl.querySelectorAll("input");
 
         
         for (let input of inputs) {
-            const value = input.value.trim(); 
-            if (value !== "") { 
-                userAnswers.push(Number(value)); 
+            const value = Number(input.value);
+            if (value >= 1 && value <= 50) {
+                userAnswers.push(value);
             }
         }
 
-        // confronta i numeri inseriti con quelli corretti
-        const correctGuesses = [];
+      
+        const correctOccurrences = {};
+        for (let number of correctNumbers) {
+            correctOccurrences[number] = (correctOccurrences[number] || 0) + 1;
+        }
+
+       
+        const userOccurrences = {};
         for (let number of userAnswers) {
-            if (correctNumbers.includes(number)) {
-                correctGuesses.push(number);
+            userOccurrences[number] = (userOccurrences[number] || 0) + 1;
+        }
+
+      
+        const correctGuesses = [];
+        for (let number in userOccurrences) {
+            if (correctOccurrences[number]) {
+               
+                const minOccurrences = Math.min(userOccurrences[number], correctOccurrences[number]);
+                for (let i = 0; i < minOccurrences; i++) {
+                    correctGuesses.push(Number(number));
+                }
             }
         }
 
@@ -82,6 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
         } else {
             messageEl.textContent = "Non hai indovinato nessun numero.";
         }
-        
+
+
     }
 });
